@@ -1,0 +1,32 @@
+@startuml
+
+title C4 Diagram - Container Level (MVP Deposits)
+
+package "Веб-платформа" as WebPlatform {
+  [Website] <<Web Application>>
+  [InternetBank] <<Web Application>>
+}
+
+package "Кол-центр" as CallCenterPlatform {
+  [CallCenter] <<CRM>>
+}
+
+package "Депозитная платформа" as DepositPlatform {
+  [DepositService] <<deposit-service>>
+  [SMSSystem] <<SMS Gateway>>
+}
+
+package "Банковская система" as BankSystem {
+  [ABS] <<Core Banking>>
+  [Kafka] <<Message Queue>>
+}
+
+Client --> [Website] : Подать заявку
+Client --> [InternetBank] : Подать заявку
+[Website] --> [CallCenter] : Передача данных
+[InternetBank] --> [DepositService] : Заявка на депозит
+[DepositService] --> [SMSSystem] : СМС-код
+[DepositService] --> [Kafka] : Заявка на создание
+[Kafka] --> [ABS] : Создание счёта
+
+@enduml
