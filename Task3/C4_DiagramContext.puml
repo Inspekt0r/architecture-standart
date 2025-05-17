@@ -1,0 +1,33 @@
+@startuml
+
+title C4 Diagram - Context Level (MVP Deposits)
+
+actor Клиент as Client
+actor "Менеджер Кол-центра" as CallCenterManager
+actor "Менеджер Бэк-офиса" as BackOfficeManager
+
+package "Внешние системы" {
+  rectangle Сайт as Website
+  rectangle ИнтернетБанк as InternetBank
+}
+
+package "Банковские системы" {
+  rectangle "Кол-центр" as CallCenter
+  rectangle АБС as ABS
+  rectangle "deposit-service" as DepositService
+  rectangle "Система СМС" as SMSSystem
+  rectangle Kafka
+}
+
+Client --> Website : Просмотр депозитов и подача заявки
+Client --> InternetBank : Просмотр и подача заявки на депозит
+CallCenterManager --> CallCenter : Обработка заявок
+BackOfficeManager --> ABS : Подтверждение депозита
+
+Website --> CallCenter : Передача заявки на депозит
+InternetBank --> DepositService : Подача заявки
+DepositService --> SMSSystem : Отправка СМС-кода
+DepositService --> Kafka : Асинхронная передача заявки
+Kafka --> ABS : Создание депозитного счёта
+
+@enduml
