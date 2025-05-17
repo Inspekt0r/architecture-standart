@@ -1,0 +1,23 @@
+@startuml
+title Открытие депозита — упрощённая схема
+
+actor Клиент
+
+rectangle "Интернет-банк" as IB
+rectangle "Кол-центр" as CC
+rectangle "Отделение банка" as Branch
+rectangle "Бэк-офис и кредитование" as BackCredit
+rectangle "АБС" as ABS
+rectangle "СМС-шлюз" as SMS
+
+Клиент --> IB : Подать заявку
+Клиент --> CC : Позвонить в кол-центр
+Клиент --> Branch : Прийти в отделение
+
+IB --> ABS : Отправка заявки
+CC --> ABS : Регистрация обращения
+Branch --> BackCredit : Запрос ставки
+BackCredit --> ABS : Обработка заявки и кредитного риска
+ABS --> SMS : Отправка уведомления клиенту
+
+@enduml
